@@ -15,7 +15,8 @@ class ArticleItem extends StatelessWidget {
 
   final Article article;
   final ShapeBorder shape;
-  final DateFormat dateFormat = new DateFormat("HH:mm dd.MM.yyyy");
+  final DateFormat timeFormat = new DateFormat("HH:mm");
+  final DateFormat dateFormat = new DateFormat("dd.MM.yyyy");
   final RegExp iframeVideoRegExp =
       new RegExp("<iframe[^>]* src=\"([\^\"]*)\"[^>]*>");
   final RegExp youTubeRegExp = new RegExp(
@@ -55,89 +56,97 @@ class ArticleItem extends StatelessWidget {
   BuildTextCard(BuildContext context) {
     final articleTextNorm =
         article.text.replaceAll("//sports.kz", "http://sports.kz");
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: ClipRRect(
-              child: IsContainImage(articleTextNorm)
-                  ? new CachedNetworkImage(
-                      imageUrl: GetFirstImage(articleTextNorm),
-                      placeholder: new CircularProgressIndicator(),
-                      errorWidget: new Icon(Icons.error),
-                      fit: BoxFit.cover,
-                      width: 70.0,
-                      height: 70.0,
-                    )
-                  : new Icon(Icons.photo),
-              borderRadius: BorderRadius.circular(10),
+    return new GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewArticleTextScreen(article: article),
             ),
-            title: Text(article.title),
-            subtitle: Text(
-                '${dateFormat.format(article.lastModifyDateTime.toLocal())}'),
+          );
+        },
+        child: Card(
+          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+          elevation: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              ListTile(
+                  leading: IsContainImage(articleTextNorm)
+                      ? ClipRRect(
+                          child: new CachedNetworkImage(
+                            imageUrl: GetFirstImage(articleTextNorm),
+                            placeholder: new CircularProgressIndicator(),
+                            errorWidget: new Icon(Icons.error),
+                            fit: BoxFit.cover,
+                            width: 70.0,
+                            height: 70.0,
+                          ),
+                          borderRadius: BorderRadius.circular(2),
+                        )
+                      : null,
+                  subtitle: Text(article.title, style: TextStyle(fontSize: 15)),
+                  title: RichText(
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text:
+                                '${timeFormat.format(article.lastModifyDateTime.toLocal())}',
+                            style: TextStyle(fontWeight: FontWeight.w500)),
+                        TextSpan(
+                            text:
+                                ' ${dateFormat.format(article.lastModifyDateTime.toLocal())}',
+                            style: TextStyle(fontWeight: FontWeight.w300)),
+                      ],
+                    ),
+                  ))
+            ],
           ),
-          ButtonTheme.bar(
-            // make buttons use the appropriate styles for cards
-            child: ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: const Text('Читать'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ViewArticleTextScreen(article: article),
-                      ),
-                    );
-                  },
-                ),
-                /*iframeVideoRegExp.firstMatch(article.text) != null ? FlatButton(
-                  child: const Text('Смотреть'),
-                  onPressed: () {
-                    _launchURL(iframeVideoRegExp.firstMatch(article.text).group(1));
-                  },
-                ):null ,*/
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   BuildVideoCard(BuildContext context) {
     final articleTextNorm =
         article.text.replaceAll("//sports.kz", "http://sports.kz");
     return Card(
+      margin: EdgeInsets.fromLTRB(0, 5, 1, 0),
+      elevation: 0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          FluTube(GetYouTubeLink(articleTextNorm),
-              autoInitialize: true, looping: true,aspectRatio: (16 / 9),),
-          ListTile(
-            title: Text(article.title),
-            subtitle: Text(
-                '${dateFormat.format(article.lastModifyDateTime.toLocal())}'),
+          FluTube(
+            GetYouTubeLink(articleTextNorm),
+            autoInitialize: true,
+            looping: true,
+            aspectRatio: (16 / 9),
           ),
-          ButtonTheme.bar(
-            // make buttons use the appropriate styles for cards
-            child: ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: const Text('Читать'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ViewArticleTextScreen(article: article),
-                      ),
-                    );
-                  },
-                )
-              ],
+          new GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewArticleTextScreen(article: article),
+                ),
+              );
+            },
+            child: ListTile(
+              title: Text(article.title),
+              subtitle: RichText(
+                text: TextSpan(
+                  style: TextStyle(fontSize: 12, color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text:
+                            '${timeFormat.format(article.lastModifyDateTime.toLocal())}',
+                        style: TextStyle(fontWeight: FontWeight.w500)),
+                    TextSpan(
+                        text:
+                            ' ${dateFormat.format(article.lastModifyDateTime.toLocal())}',
+                        style: TextStyle(fontWeight: FontWeight.w300)),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -145,7 +154,7 @@ class ArticleItem extends StatelessWidget {
     );
   }
 
-  Card BuildCard(BuildContext context) {
+  Widget BuildCard(BuildContext context) {
     if (IsContainYouTube(article.text)) {
       return BuildVideoCard(context);
     } else {

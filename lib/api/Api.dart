@@ -13,6 +13,15 @@ import 'package:npulse_app/model/Articles.dart';
 class Api {
   static const BASE_URL =
       "http://deembedding.azurewebsites.net/odata/Articles?\$orderby=lastmodifydatetime%20desc";
+  static String GetUrlByCount(int count)
+  {
+    return "https://deembedding.azurewebsites.net/odata/Articles?\$orderby=lastmodifydatetime%20desc&\$skip=$count";
+  }
+
+  static String GetUrlByDateTime(DateTime dateTime)
+  {
+    return "https://deembedding.azurewebsites.net/odata/Articles?\$orderby=lastmodifydatetime%20desc&\$filter=LastModifyDateTime%20gt%20${dateTime.toIso8601String()}";
+  }
 
   static Future<Articles> fetchArticles(String url) async {
     final response =
