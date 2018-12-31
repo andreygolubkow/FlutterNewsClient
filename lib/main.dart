@@ -33,13 +33,35 @@ class MainApp extends StatelessWidget {
 
 class MainPage extends StatelessWidget {
   final String title;
+  ScrollController _scrollViewController;
 
   MainPage({Key key, @required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new NestedScrollView(
+        controller: _scrollViewController,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            new SliverAppBar(
+              title: new Text("asdsad"),
+              pinned: true,
+              floating: true,
+              forceElevated: innerBoxIsScrolled,
+            ),
+          ];
+        },
+        body: new Text("sad")
+      ),
+    );
+  }
+
+  /*@override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 2,
           title: Text(title),
         ),
         body: Center(
@@ -57,6 +79,8 @@ class MainPage extends StatelessWidget {
           },
         )));
   }
+  */
+
 }
 
 class CardsList extends StatefulWidget {

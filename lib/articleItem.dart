@@ -72,19 +72,6 @@ class ArticleItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               ListTile(
-                  leading: IsContainImage(articleTextNorm)
-                      ? ClipRRect(
-                          child: new CachedNetworkImage(
-                            imageUrl: GetFirstImage(articleTextNorm),
-                            placeholder: new CircularProgressIndicator(),
-                            errorWidget: new Icon(Icons.error),
-                            fit: BoxFit.cover,
-                            width: 70.0,
-                            height: 70.0,
-                          ),
-                          borderRadius: BorderRadius.circular(2),
-                        )
-                      : null,
                   subtitle: Text(article.title, style: TextStyle(fontSize: 15)),
                   title: RichText(
                     text: TextSpan(
