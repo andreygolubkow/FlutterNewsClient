@@ -32,6 +32,10 @@ dependencies:
   backdrop: ^0.1.8
   webview_flutter: ^0.1.2
   swipedetector: ^1.2.0
+  page_transition: ^1.0.6
+  firebase_core: ^0.2.5
+  firebase_analytics: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +63,13 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.io/assets-and-images/#from-packages
-
+  fonts:
+      - family: NotoSerif
+        fonts:
+          - asset: fonts/NotoSerif-Regular.ttf
+          - asset: fonts/NotoSerif-Bold.ttf
+          - asset: fonts/NotoSerif-BoldItalic.ttf
+          - asset: fonts/NotoSerif-Italic.ttf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

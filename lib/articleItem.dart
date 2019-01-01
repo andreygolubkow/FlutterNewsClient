@@ -2,14 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:npulse_app/ViewArticleTextScreen.dart';
-
+import 'package:page_transition/page_transition.dart';
 import 'package:npulse_app/model/Article.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutube/flutube.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 class ArticleItem extends StatelessWidget {
-  ArticleItem({Key key, @required this.article, this.shape})
+  final FirebaseAnalytics analytics;
+
+  ArticleItem({Key key, @required this.article, this.shape, this.analytics})
       : assert(article != null),
         super(key: key);
 
@@ -22,6 +26,20 @@ class ArticleItem extends StatelessWidget {
   final RegExp youTubeRegExp = new RegExp(
       "((?:https?:\\/\\/)?(?:www\\.)?youtu\\.?be(?:\.com)?\\/?.*(?:watch|embed)?(?:.*v=|v\\/|\\/)([\\w\\-_]+)\\&?)\"");
   final RegExp imageRegExp = new RegExp("<img[^>]* src=\"([\^\"]*)\"[^>]*>");
+  final RegExp firstLetter = new RegExp("([A-zА-я])");
+
+
+
+  double getMainCardWidth(BuildContext context)
+  {
+    double fullWidth = MediaQuery.of(context).size.width;
+    return fullWidth-getImageCardWidth(context)-fullWidth*0.05;
+  }
+
+  double getImageCardWidth(BuildContext context)
+  {
+    return MediaQuery.of(context).size.width*0.3;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,23 +74,36 @@ class ArticleItem extends StatelessWidget {
   BuildTextCard(BuildContext context) {
     final articleTextNorm =
         article.text.replaceAll("//sports.kz", "http://sports.kz");
+    final avatar = IsContainImage(articleTextNorm)
+        ? CircleAvatar(
+            backgroundColor: Colors.transparent,
+            backgroundImage: NetworkImage(GetFirstImage(articleTextNorm)),
+          )
+        : CircleAvatar(
+            backgroundColor: Colors.black,
+            child: Text(
+                firstLetter.firstMatch(article.title).group(0).toUpperCase(),
+                style:
+                    TextStyle(fontFamily: "NotoSerif", color: Colors.white)));
+
     return new GestureDetector(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ViewArticleTextScreen(article: article),
-            ),
+            PageTransition(
+                type: PageTransitionType.rightToLeft,
+                child: ViewArticleTextScreen(article, analytics)),
           );
         },
         child: Card(
-          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          elevation: 0,
+          margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
+          elevation: 2,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               ListTile(
-                  subtitle: Text(article.title, style: TextStyle(fontSize: 15)),
+                  leading: avatar,
+                  subtitle: Text(article.title, style: TextStyle(fontSize: 18)),
                   title: RichText(
                     text: TextSpan(
                       style: TextStyle(fontSize: 12, color: Colors.black),
@@ -97,8 +128,8 @@ class ArticleItem extends StatelessWidget {
     final articleTextNorm =
         article.text.replaceAll("//sports.kz", "http://sports.kz");
     return Card(
-      margin: EdgeInsets.fromLTRB(0, 5, 1, 0),
-      elevation: 0,
+      margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
+      elevation: 2,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -107,19 +138,28 @@ class ArticleItem extends StatelessWidget {
             autoInitialize: true,
             looping: true,
             aspectRatio: (16 / 9),
+            onVideoStart: () {
+              analytics.logViewItem(
+                  itemId: article.id.toString(),
+                  itemName: article.title,
+                  itemCategory: "Video");
+            },
           ),
           new GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ViewArticleTextScreen(article: article),
-                ),
+                PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: ViewArticleTextScreen(article, analytics)),
               );
             },
             child: ListTile(
-              title: Text(article.title),
-              subtitle: RichText(
+              subtitle: Text(
+                article.title,
+                style: TextStyle(fontSize: 18),
+              ),
+              title: RichText(
                 text: TextSpan(
                   style: TextStyle(fontSize: 12, color: Colors.black),
                   children: <TextSpan>[
@@ -142,10 +182,71 @@ class ArticleItem extends StatelessWidget {
   }
 
   Widget BuildCard(BuildContext context) {
+    return BuildTest(context);
     if (IsContainYouTube(article.text)) {
       return BuildVideoCard(context);
     } else {
       return BuildTextCard(context);
     }
+  }
+
+  BuildLeftImageCard(BuildContext context) {
+    final articleTextNorm =
+        article.text.replaceAll("//sports.kz", "http://sports.kz");
+
+    return new GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft,
+                child: ViewArticleTextScreen(article, analytics)),
+          );
+        },
+        child: Card(margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
+          elevation: 2,
+          child: Column(
+          mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+          Container(
+            //padding: const EdgeInsets.all(32.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        width: getImageCardWidth(context),
+                          padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(0),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(10)
+                              ),
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.network(GetFirstImage(articleTextNorm),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              )),
+                                   ),
+                    )
+                  ],
+                ), Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Text(article.title)
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          ],)
+        ));
   }
 }

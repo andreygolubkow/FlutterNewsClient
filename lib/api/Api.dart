@@ -24,6 +24,7 @@ class Api {
   }
 
   static Future<Articles> fetchArticles(String url) async {
+    print("FETCHING");
     final response =
     await http.get(url);
 

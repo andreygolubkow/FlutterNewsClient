@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "286116432664",
+    "firebase_url": "https://npulse-99169.firebaseio.com",
+    "project_id": "npulse-99169",
+    "storage_bucket": "npulse-99169.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286116432664:android:bed98076c6542d5f",
+        "android_client_info": {
+          "package_name": "kz.andreygolubkow.npulseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286116432664-hoh05lu5sirbr3k4fs937l0m3gupqltn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy2ObzdGVA-j0djr1_ihv4JWX0uzoLSsg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,7 +6,7 @@ class Articles {
   String odatanextLink;
 
 
-  Articles({this.articles, this.odatacontext, this.odatanextLink});
+  Articles(this.articles, this.odatacontext, this.odatanextLink);
 
   Articles.fromMap(Map<String, dynamic> map)
       : articles = new List<Article>.from(map['value'].map((article) => new Article.fromMap(article))),
