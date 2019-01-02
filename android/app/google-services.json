@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "286116432664",
-    "firebase_url": "https://npulse-99169.firebaseio.com",
-    "project_id": "npulse-99169",
-    "storage_bucket": "npulse-99169.appspot.com"
+    "project_number": "800495454908",
+    "firebase_url": "https://sportskaz-a2fcd.firebaseio.com",
+    "project_id": "sportskaz-a2fcd",
+    "storage_bucket": "sportskaz-a2fcd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:286116432664:android:bed98076c6542d5f",
+        "mobilesdk_app_id": "1:800495454908:android:bed98076c6542d5f",
         "android_client_info": {
           "package_name": "kz.andreygolubkow.npulseapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "286116432664-hoh05lu5sirbr3k4fs937l0m3gupqltn.apps.googleusercontent.com",
+          "client_id": "800495454908-sbgf7pilo6nidel3crfschvel5m6ml0r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBy2ObzdGVA-j0djr1_ihv4JWX0uzoLSsg"
+          "current_key": "AIzaSyBI3BwEmV4jBunqLMAAQO7WD-hJa65aKcc"
         }
       ],
       "services": {

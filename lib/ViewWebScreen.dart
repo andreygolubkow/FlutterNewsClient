@@ -29,7 +29,7 @@ class ViewWebScreen extends StatelessWidget with RouteAware{
     // Use the Todo to create our UI
     return new Scaffold(
       appBar:  AppBar(
-        backgroundColor: Color.fromRGBO(44, 43, 40, 1),
+        backgroundColor: Colors.black,
         title: Text(url, style: TextStyle(fontSize: 14),),
         actions: <Widget>[
           IconButton(

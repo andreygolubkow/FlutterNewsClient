@@ -25,7 +25,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appName = 'NPulse';
+    final appName = 'SPORTS Казахстан';
     final mainNews = 'Главные новости';
     return MaterialApp(
         title: appName,
@@ -34,8 +34,8 @@ class MainApp extends StatelessWidget {
         theme: ThemeData(
           // Define the default Brightness and Colors
           brightness: Brightness.light,
-          primaryColor: Colors.green,
-          accentColor: Colors.indigo,
+          primaryColor: Colors.black,
+          accentColor: Colors.white,
             fontFamily: 'NotoSerif',
         ),
         home: MainPage(
@@ -227,7 +227,7 @@ class _CardsListState extends State<CardsList> {
     return new ClassicIndicator(
       mode: mode,
       failedText: "Произошла ошибка",
-      releaseText: "Отпустите, что бы обновить",
+      releaseText: "Отпустите, чтобы обновить",
       refreshingText: 'Обновляем...',
       completeText: "Лента обновлена",
       idleIcon: const Icon(Icons.arrow_upward),
@@ -240,7 +240,7 @@ class _CardsListState extends State<CardsList> {
       mode: mode,
       noDataText: "Новостей больше нет",
       failedText: "Произошла ошибка",
-      releaseText: "Отпустите, что бы загрузить",
+      releaseText: "Отпустите, чтобы загрузить",
       refreshingText: 'Загружаем...',
       idleIcon: const Icon(Icons.arrow_upward),
       releaseIcon: const Icon(Icons.arrow_downward),

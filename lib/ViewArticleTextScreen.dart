@@ -50,11 +50,11 @@ class ViewArticleTextScreenState extends State<ViewArticleTextScreen> {
 
   @override
   Widget build(BuildContext context) {
-    analytics.setUserProperty(name: 'lastArticle', value: article.title);
+    analytics.setUserProperty(name: "lastArticle", value: article.id.toString() );
     // Use the Todo to create our UI
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Color.fromRGBO(44, 43, 40, 1),
+              backgroundColor: Colors.black,
               title: Text("${article.title}", style: TextStyle(fontSize: 14)),
               actions: <Widget>[
                 IconButton(
