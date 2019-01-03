@@ -9,6 +9,7 @@ import 'package:flutube/flutube.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 class ArticleItem extends StatelessWidget {
   final FirebaseAnalytics analytics;
@@ -56,11 +57,13 @@ class ArticleItem extends StatelessWidget {
   }
 
   bool IsContainImage(String text) {
-    return imageRegExp.hasMatch(text);
+    return article.imageUrl != null && article.imageUrl.length>2;
   }
 
-  String GetFirstImage(String text) {
-    return imageRegExp.firstMatch(text).group(1);
+  Iterable<String> GetImages() {
+    var imgs = article.imageUrl.split("\r\n").where((s) => s.length>3);
+    return imgs;
+    //return imageRegExp.firstMatch(text).group(1);
   }
 
   bool IsContainYouTube(String text) {
@@ -89,14 +92,16 @@ class ArticleItem extends StatelessWidget {
   Widget BuildCard(BuildContext context) {
     if (IsContainYouTube(article.text)) {
       return BuildVideoCard(context);
-    } else {
-      return IsContainImage(article.text) ? BuildLeftImageCard(context) : BuildTextCard(context);
+    } else if (IsContainImage(article.text)) {
+      var images = GetImages();
+      return images.length > 1 ? BuildBigImagesCard(context) :  BuildLeftImageCard(context);
     }
+    return BuildTextCard(context);
   }
 
   BuildLeftImageCard(BuildContext context) {
-    final articleTextNorm =
-        article.text.replaceAll("//sports.kz", "http://sports.kz");
+    //final articleTextNorm =
+      //  article.text.replaceAll("//sports.kz", "http://sports.kz");
 
     return new GestureDetector(
         onTap: () {
@@ -135,7 +140,7 @@ class ArticleItem extends StatelessWidget {
                                   child: AspectRatio(
                                     aspectRatio: 1,
                                     child: Image.network(
-                                      GetFirstImage(articleTextNorm),
+                                      GetImages().first,
                                       fit: BoxFit.fitHeight,
                                     ),
                                   )),
@@ -177,8 +182,8 @@ class ArticleItem extends StatelessWidget {
   }
 
   BuildTextCard(BuildContext context) {
-    final articleTextNorm =
-        article.text.replaceAll("//sports.kz", "http://sports.kz");
+    /*final articleTextNorm =
+        article.text.replaceAll("//sports.kz", "http://sports.kz"); */
 
     return new GestureDetector(
         onTap: () {
@@ -196,6 +201,7 @@ class ArticleItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Container(
+                  padding: EdgeInsets.all(10) ,
                   child: RichText(
                     maxLines:5,
                     text:
@@ -220,8 +226,8 @@ class ArticleItem extends StatelessWidget {
   }
 
   BuildVideoCard(BuildContext context) {
-    final articleTextNorm =
-    article.text.replaceAll("//sports.kz", "http://sports.kz");
+    /*final articleTextNorm =
+    article.text.replaceAll("//sports.kz", "http://sports.kz");*/
 
     return new GestureDetector(
         onTap: () {
@@ -239,7 +245,7 @@ class ArticleItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 FluTube(
-                  GetYouTubeLink(articleTextNorm),
+                  GetYouTubeLink(article.text),
                   autoInitialize: true,
                   looping: true,
                   aspectRatio: (16 / 9),
@@ -249,6 +255,73 @@ class ArticleItem extends StatelessWidget {
                         itemName: article.title,
                         itemCategory: "Video");
                   },
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(CutTitle(article.title)),
+                            Container(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.black),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text:
+                                        '${timeFormat(article.lastModifyDateTime)}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w200)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )));
+  }
+
+  BuildBigImagesCard(BuildContext context) {
+    /*final articleTextNorm =
+    article.text.replaceAll("//sports.kz", "http://sports.kz");*/
+
+    return new GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft,
+                child: ViewArticleTextScreen(article, analytics)),
+          );
+        },
+        child: Card(
+            margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
+            elevation: 2,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new SizedBox(
+                    height: 200.0,
+                    child: new Carousel(
+                      images: GetImages().map((i) => new NetworkImage(i)).toList(),
+                      boxFit: BoxFit.fitWidth,
+                      dotSize: 4.0,
+                      dotSpacing: 10.0,
+                      dotColor: Colors.white,
+                      indicatorBgPadding: 5.0,
+                      dotBgColor: Colors.transparent,
+                      borderRadius: false,
+                    )
                 ),
                 Container(
                   padding: const EdgeInsets.all(5.0),

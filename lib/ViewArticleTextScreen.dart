@@ -84,8 +84,7 @@ class ViewArticleTextScreenState extends State<ViewArticleTextScreen> {
                   },
                   child: SingleChildScrollView(
                       child: Html(
-                          data: article.text.replaceAll(
-                              "//sports.kz", "http://sports.kz"),
+                          data: article.text,
                           //Optional parameters:
                           padding: EdgeInsets.all(8.0),
                           onLinkTap: (url) {
