@@ -4,6 +4,7 @@ class Article {
   final String text;
   final String imageUrl;
   final String sourceUrl;
+  final String mobileUrl;
   final DateTime lastModifyDateTime;
 
 
@@ -13,7 +14,8 @@ class Article {
     this.text,
     this.imageUrl,
     this.sourceUrl,
-    this.lastModifyDateTime
+    this.lastModifyDateTime,
+    this.mobileUrl
   });
 
   Article.fromMap(Map<String, dynamic>  map) :
@@ -22,5 +24,6 @@ class Article {
         text = map['Text'],
         imageUrl = map['ImageUrl'],
         sourceUrl = map['SourceUrl'],
-        lastModifyDateTime = DateTime.parse(map['LastModifyDateTime']);
+        lastModifyDateTime = DateTime.parse(map['LastModifyDateTime']),
+            mobileUrl = map['MobileUrl'];
 }

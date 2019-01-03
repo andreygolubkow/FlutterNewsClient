@@ -251,6 +251,7 @@ class _CardsListState extends State<CardsList> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Colors.white,
         body: new SmartRefresher(
             enablePullDown: true,
             enablePullUp: true,

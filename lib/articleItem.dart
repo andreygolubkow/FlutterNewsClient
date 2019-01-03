@@ -8,8 +8,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutube/flutube.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+
 
 class ArticleItem extends StatelessWidget {
   final FirebaseAnalytics analytics;
@@ -113,8 +114,8 @@ class ArticleItem extends StatelessWidget {
           );
         },
         child: Card(
-            margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
-            elevation: 2,
+            margin: EdgeInsets.fromLTRB(0, 4, 0, 0),
+            elevation: 0,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -130,12 +131,12 @@ class ArticleItem extends StatelessWidget {
                             child: Container(
                               width: getImageCardWidth(context),
                               height: getImageCardWidth(context),
-                              padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                               child: ClipRRect(
                                   borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(0),
+                                      topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(0),
+                                      bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10)),
                                   child: AspectRatio(
                                     aspectRatio: 1,
@@ -177,6 +178,7 @@ class ArticleItem extends StatelessWidget {
                     ],
                   ),
                 ),
+                Divider(height: 5),
               ],
             )));
   }
@@ -196,7 +198,7 @@ class ArticleItem extends StatelessWidget {
         },
         child: Card(
             margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
-            elevation: 2,
+            elevation: 0,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -221,6 +223,7 @@ class ArticleItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                Divider(height: 5),
               ],
             )));
   }
@@ -240,7 +243,7 @@ class ArticleItem extends StatelessWidget {
         },
         child: Card(
             margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
-            elevation: 2,
+            elevation: 0,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -287,6 +290,7 @@ class ArticleItem extends StatelessWidget {
                     ],
                   ),
                 ),
+                Divider(height: 5),
               ],
             )));
   }
@@ -305,15 +309,15 @@ class ArticleItem extends StatelessWidget {
           );
         },
         child: Card(
-            margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
-            elevation: 2,
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 4),
+            elevation: 0,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 new SizedBox(
                     height: 200.0,
                     child: new Carousel(
-                      images: GetImages().map((i) => new NetworkImage(i)).toList(),
+                      images: GetImages().map((i) => AdvancedNetworkImage(i,useDiskCache: true)).toList(),
                       boxFit: BoxFit.fitWidth,
                       dotSize: 4.0,
                       dotSpacing: 10.0,
@@ -321,6 +325,7 @@ class ArticleItem extends StatelessWidget {
                       indicatorBgPadding: 5.0,
                       dotBgColor: Colors.transparent,
                       borderRadius: false,
+                      autoplay: false,
                     )
                 ),
                 Container(
@@ -354,6 +359,7 @@ class ArticleItem extends StatelessWidget {
                     ],
                   ),
                 ),
+                Divider(height: 5),
               ],
             )));
   }

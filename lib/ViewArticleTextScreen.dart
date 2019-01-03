@@ -69,7 +69,7 @@ class ViewArticleTextScreenState extends State<ViewArticleTextScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ViewWebScreen(url: article.sourceUrl),
+                            ViewWebScreen(url: article.mobileUrl),
                       ),
                     );
                   },
